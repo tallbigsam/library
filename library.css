@@ -1,0 +1,6 @@
+div.book {
+  border: 1px;
+  border-color: blue;
+  border-style: solid;
+  margin: 1rem;
+}
