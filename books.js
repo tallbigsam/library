@@ -5,20 +5,15 @@ addBookToLibrary(
   "That Guy",
   "How to win friends and influence people",
   libraryIndex,
-  new Boolean(false)
+  false
 );
 addBookToLibrary(
   "Scary Man",
   "Things that go bump in the night",
   libraryIndex,
-  new Boolean(false)
+  false
 );
-addBookToLibrary(
-  "Mark Ransom",
-  "Never to be told",
-  libraryIndex,
-  new Boolean(false)
-);
+addBookToLibrary("Mark Ransom", "Never to be told", libraryIndex, false);
 
 console.log(myLibrary);
 
@@ -29,7 +24,9 @@ function Book(author, title, index, isRead) {
   this.isRead = isRead;
 
   this.toggleRead = function () {
-    this.isRead = !this.isRead;
+    console.log("index is : " + this.index);
+    let book = myLibrary[this.index];
+    book.isRead = !book.isRead;
     let isReadHeading = document.getElementById(String(this.index) + "isRead");
     isReadHeading.textContent = this.isRead;
   };
@@ -73,8 +70,9 @@ function Book(author, title, index, isRead) {
 function toggleRead(event) {
   let bookDiv = event.srcElement.parentNode;
   let book = myLibrary[bookDiv.id];
+  console.log("ISREAD: " + book.isRead);
   book.toggleRead();
-  console.log(book);
+  console.log("Ran Toggle, now book isread: " + book.isRead);
 }
 
 function removeBookFromLibrary(event) {
@@ -116,7 +114,8 @@ function createBook(event) {
     }
   }
 
-  let newBook = new Book(author, title, libraryIndex, new Boolean(false));
+  let newBook = new Book(author, title, libraryIndex, false);
+  console.log(newBook);
   addBookToLibrary(newBook);
   libraryContent.appendChild(newBook.createBookDiv());
 }
