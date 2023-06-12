@@ -4,20 +4,35 @@ let libraryIndex = 0;
 addBookToLibrary(
   "That Guy",
   "How to win friends and influence people",
-  libraryIndex
+  libraryIndex,
+  new Boolean(false)
 );
-console.log("Created Book");
-addBookToLibrary("Scary Man", "Things that go bump in the night", libraryIndex);
-console.log("Created Book");
-addBookToLibrary("Mark Ransom", "Never to be told", libraryIndex);
-console.log("Created Book");
+addBookToLibrary(
+  "Scary Man",
+  "Things that go bump in the night",
+  libraryIndex,
+  new Boolean(false)
+);
+addBookToLibrary(
+  "Mark Ransom",
+  "Never to be told",
+  libraryIndex,
+  new Boolean(false)
+);
 
 console.log(myLibrary);
 
-function Book(author, title, index) {
+function Book(author, title, index, isRead) {
   this.author = author;
   this.title = title;
   this.index = index;
+  this.isRead = isRead;
+
+  this.toggleRead = function () {
+    this.isRead = !this.isRead;
+    let isReadHeading = document.getElementById(String(this.index) + "isRead");
+    isReadHeading.textContent = this.isRead;
+  };
 
   this.createBookDiv = function () {
     let bookDiv = document.createElement("div");
@@ -25,23 +40,41 @@ function Book(author, title, index) {
     bookDiv.className = "book";
     let title = document.createElement("div");
     let author = document.createElement("div");
+    let isReadDiv = document.createElement("div");
     let bookTitle = document.createElement("h3");
     let bookAuthor = document.createElement("h4");
+    let isRead = document.createElement("h4");
+    isRead.id = String(this.index) + "isRead";
 
     bookTitle.textContent = this.title;
     bookAuthor.textContent = this.author;
+    isRead.textContent = String(this.isRead);
     title.append(bookTitle);
     author.append(bookAuthor);
+    isReadDiv.append(isRead);
     bookDiv.append(bookTitle);
     bookDiv.append(bookAuthor);
+    bookDiv.append(isReadDiv);
 
     removeBook = document.createElement("button");
     removeBook.textContent = "Remove Book";
     removeBook.addEventListener("click", removeBookFromLibrary);
     bookDiv.append(removeBook);
 
+    isRead = document.createElement("button");
+    isRead.textContent = "Read Toggle";
+    isRead.addEventListener("click", toggleRead);
+    bookDiv.append(isRead);
+
     return bookDiv;
   };
+}
+
+function toggleRead(event) {
+  let bookDiv = event.srcElement.parentNode;
+  let book = myLibrary[bookDiv.id];
+  book.toggleRead();
+  console.log(book);
 }
 
 function removeBookFromLibrary(event) {
@@ -53,8 +86,8 @@ function removeBookFromLibrary(event) {
   // console.log(parent);
 }
 
-function addBookToLibrary(author, title, index) {
-  let newBook = new Book(author, title, index);
+function addBookToLibrary(author, title, index, isRead) {
+  let newBook = new Book(author, title, index, isRead);
   myLibrary.push(newBook);
   console.log(libraryIndex);
   libraryIndex = ++libraryIndex;
@@ -83,7 +116,7 @@ function createBook(event) {
     }
   }
 
-  let newBook = new Book(author, title, libraryIndex);
+  let newBook = new Book(author, title, libraryIndex, new Boolean(false));
   addBookToLibrary(newBook);
   libraryContent.appendChild(newBook.createBookDiv());
 }
