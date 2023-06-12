@@ -1,27 +1,33 @@
 let myLibrary = [];
-
+let libraryIndex = 0;
 //create books
-let friendsBook = new Book(
+addBookToLibrary(
   "That Guy",
-  "How to win friends and influence people"
+  "How to win friends and influence people",
+  libraryIndex
 );
-let scaryBook = new Book("Scary Man", "Things that go bump in the night");
-let adviceBook = new Book("Mark Ransom", "Never to be told");
-addBookToLibrary(friendsBook);
-addBookToLibrary(scaryBook);
-addBookToLibrary(adviceBook);
+console.log("Created Book");
+addBookToLibrary("Scary Man", "Things that go bump in the night", libraryIndex);
+console.log("Created Book");
+addBookToLibrary("Mark Ransom", "Never to be told", libraryIndex);
+console.log("Created Book");
 
-function Book(author, title) {
+console.log(myLibrary);
+
+function Book(author, title, index) {
   this.author = author;
   this.title = title;
+  this.index = index;
 
   this.createBookDiv = function () {
     let bookDiv = document.createElement("div");
+    bookDiv.id = index;
     bookDiv.className = "book";
     let title = document.createElement("div");
     let author = document.createElement("div");
     let bookTitle = document.createElement("h3");
     let bookAuthor = document.createElement("h4");
+
     bookTitle.textContent = this.title;
     bookAuthor.textContent = this.author;
     title.append(bookTitle);
@@ -29,12 +35,30 @@ function Book(author, title) {
     bookDiv.append(bookTitle);
     bookDiv.append(bookAuthor);
 
+    removeBook = document.createElement("button");
+    removeBook.textContent = "Remove Book";
+    removeBook.addEventListener("click", removeBookFromLibrary);
+    bookDiv.append(removeBook);
+
     return bookDiv;
   };
 }
 
-function addBookToLibrary(book) {
-  myLibrary.push(book);
+function removeBookFromLibrary(event) {
+  console.log(event);
+  // let parent = event.srcElement.parentNode;
+  console.log(event.srcElement.parentNode);
+  let content = document.getElementById("content");
+  content.removeChild(event.srcElement.parentNode);
+  // console.log(parent);
+}
+
+function addBookToLibrary(author, title, index) {
+  let newBook = new Book(author, title, index);
+  myLibrary.push(newBook);
+  console.log(libraryIndex);
+  libraryIndex = ++libraryIndex;
+  console.log(libraryIndex);
 }
 
 function addBookButtonDiv() {
@@ -58,10 +82,8 @@ function createBook(event) {
       title = pair[1];
     }
   }
-  console.log(title);
-  console.log(author);
 
-  let newBook = new Book(author, title);
+  let newBook = new Book(author, title, libraryIndex);
   addBookToLibrary(newBook);
   libraryContent.appendChild(newBook.createBookDiv());
 }

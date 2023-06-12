@@ -3,4 +3,5 @@ div.book {
   border-color: blue;
   border-style: solid;
   margin: 1rem;
+  padding: 1rem;
 }
