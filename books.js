@@ -115,7 +115,9 @@ function createBook(event) {
   }
 
   addBookToLibrary(author, title, libraryIndex, false);
-  libraryContent.appendChild(newBook.createBookDiv());
+  const newBookDiv = myLibrary[libraryIndex - 1].createBookDiv();
+  const libraryContent = document.getElementById("content");
+  libraryContent.appendChild(newBookDiv);
 }
 
 function createAddBookForm() {
